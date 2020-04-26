@@ -1,0 +1,64 @@
+{
+  "variables": {
+    "disk_size": "10240",
+    "version": "6.7",
+    "iso_url": "VMware-VMvisor-Installer-6.7.0.update03-14320388.x86_64.iso",
+    "iso_checksum": "fcbaa4cd952abd9e629fb131b8f46a949844405d8976372e7e5b55917623fbe0",
+    "iso_checksum_type": "sha256"
+  },
+  "builders": [
+    {
+      "name": "esxi-{{user `version`}}-amd64-libvirt",
+      "type": "qemu",
+      "accelerator": "kvm",
+      "cpus": 2,
+      "memory": 4096,
+      "qemuargs": [
+        ["-cpu", "host"],
+        ["-device", "e1000,netdev=user.0,mac=52:54:00:12:34:56"]
+      ],
+      "headless": true,
+      "http_directory": ".",
+      "format": "qcow2",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_interface": "ide",
+      "disk_discard": "unmap",
+      "net_device": "e1000",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "ssh_username": "root",
+      "ssh_password": "HeyH0Password",
+      "ssh_timeout": "60m",
+      "boot_wait": "5s",
+      "boot_command": [
+        "<enter>",
+        "<wait>",
+        "<leftShiftOn>O<leftShiftOff>",
+        "<wait>",
+        " netdevice=vmnic0",
+        " bootproto=dhcp",
+        " ks=http://{{.HTTPIP}}:{{.HTTPPort}}/ks.cfg",
+        "<enter>"
+      ],
+      "shutdown_command": "poweroff; while true; do sleep 10; done;"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "expect_disconnect": true,
+      "execute_command": "sh {{.Path}}",
+      "scripts": [
+        "provision.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "{{.BuildName}}.box",
+      "vagrantfile_template": "Vagrantfile.template"
+    }
+  ]
+}
