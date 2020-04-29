@@ -20,6 +20,7 @@ Try using it:
 ```bash
 vagrant ssh
 ps -c
+esxcli software vib list
 esxcli system version get
 ```
 
