@@ -15,6 +15,14 @@ cd example
 time vagrant up
 ```
 
+Try using it:
+
+```bash
+vagrant ssh
+ps -c
+esxcli system version get
+```
+
 # Notes
 
 * At the ESXi console you can press the following key
