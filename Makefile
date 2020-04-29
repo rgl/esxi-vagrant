@@ -5,7 +5,7 @@ help:
 
 build-libvirt: esxi-${VERSION}-amd64-libvirt.box
 
-esxi-${VERSION}-amd64-libvirt.box: ks.cfg provision.sh esxi.json Vagrantfile.template
+esxi-${VERSION}-amd64-libvirt.box: ks.cfg sysprep.sh esxi.json Vagrantfile.template
 	rm -f $@
 	PACKER_KEY_INTERVAL=10ms CHECKPOINT_DISABLE=1 PACKER_LOG=1 PACKER_LOG_PATH=$@.log \
 		packer build -only=esxi-${VERSION}-amd64-libvirt -on-error=abort -timestamp-ui esxi.json

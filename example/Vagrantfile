@@ -3,7 +3,7 @@ Vagrant.configure(2) do |config|
 
   config.vm.provider 'libvirt' do |lv, config|
     lv.memory = 4096
-    lv.cpus = 2
+    lv.cpus = 4
   end
 
   config.vm.provision 'shell', inline: 'esxcli system version get'

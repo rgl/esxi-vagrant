@@ -10,9 +10,6 @@ Vagrant.configure(2) do |config|
     lv.disk_bus = 'ide'
     lv.nic_model_type = 'e1000'
     lv.video_type = 'vga'
-    # this has to be hard-coded for now.
-    # see https://github.com/vagrant-libvirt/vagrant-libvirt/issues/1099
-    lv.management_network_mac = '52:54:00:12:34:56'
     config.vm.synced_folder '.', '/vagrant', disabled: true
   end
 end
