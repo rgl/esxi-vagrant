@@ -1,5 +1,6 @@
 Vagrant.configure(2) do |config|
   config.vm.box = 'esxi-6.7-amd64'
+  config.vm.hostname = 'example.test'
 
   config.vm.provider 'libvirt' do |lv, config|
     lv.memory = 4096
