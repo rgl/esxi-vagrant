@@ -22,3 +22,6 @@ tmp/esxi-7.iso:
 	# NB unfortunately this does not yet work in Ubuntu/Linux:
 	# 		An unexpected error occurred:
 	# 		The VMware.ImageBuilder module is not currently supported on the Core edition of PowerShell.
+
+clean:
+	rm -rf output-*
