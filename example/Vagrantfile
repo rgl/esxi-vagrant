@@ -15,4 +15,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, privileged: false, inline: 'esxcli system settings advanced set -o /UserVars/HostClientCEIPOptIn -i 2'
   # show the ESXi version.
   config.vm.provision :shell, privileged: false, inline: 'esxcli system version get'
+  # show the machine IP address.
+  config.vm.provision :shell, privileged: false, inline: 'esxcli network ip interface ipv4 get'
 end
