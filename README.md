@@ -27,6 +27,11 @@ time vagrant up
   * `Alt+F11`: Status console.
   * `Alt+F12`: Log console.
 
+* In case you want to start virtual machines within the ESXi environment it is highly recommended
+to enable nested virtualization on your host system, see:
+
+ * [Fedora Docs: How to enable nested virtualization with KVM](https://docs.fedoraproject.org/en-US/quick-docs/using-nested-virtualization-in-kvm/)
+
 # Reference
 
 * [VMware Docs: Installing or Upgrading Hosts by Using a Script](https://docs.vmware.com/en/VMware-vSphere/6.7/com.vmware.esxi.install.doc/GUID-870A07BC-F8B4-47AF-9476-D542BA53F1F5.html).
