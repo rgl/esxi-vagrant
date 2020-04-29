@@ -8,9 +8,6 @@ Create the base box and follow the returned instructions:
 time make build-libvirt
 ```
 
-**NB** the [MAC address has to be hard-coded](https://github.com/vagrant-libvirt/vagrant-libvirt/issues/1099).
-if you known another solution, please let me know!
-
 Launch the vagrant example:
 
 ```bash
