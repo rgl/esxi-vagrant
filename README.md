@@ -1,6 +1,16 @@
 # Usage
 
+**NB** These instructions are for an Ubuntu 20.04 host.
+
 Download the [Free ESXi 6.7 (aka vSphere Hypervisor) iso file](https://www.vmware.com/go/get-free-esxi).
+
+Install QEMU/KVM:
+
+```bash
+apt-get install -y qemu-kvm
+apt-get install -y sysfsutils
+systool -m kvm_intel -v
+```
 
 Create the base box and follow the returned instructions:
 
@@ -11,6 +21,8 @@ time make build-libvirt
 Launch the vagrant example:
 
 ```bash
+apt-get install -y virt-manager libvirt-dev
+vagrant plugin install vagrant-libvirt
 cd example
 time vagrant up
 ```
