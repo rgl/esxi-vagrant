@@ -1,10 +1,12 @@
 Vagrant.configure(2) do |config|
   config.vm.box = 'esxi-6.7-amd64'
+  config.vm.define 'esxi'
   config.vm.hostname = 'esxi.test'
 
   config.vm.provider 'libvirt' do |lv, config|
     lv.memory = 4096
     lv.cpus = 4
+  end
 
   # create the management certificate that will be used to access the esxi
   # management web interface (hostd).

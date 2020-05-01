@@ -22,7 +22,7 @@ Launch the vagrant example:
 
 ```bash
 apt-get install -y virt-manager libvirt-dev
-vagrant plugin install vagrant-libvirt
+vagrant plugin install vagrant-libvirt # see https://github.com/vagrant-libvirt/vagrant-libvirt
 cd example
 time vagrant up
 ```
@@ -34,7 +34,10 @@ vagrant ssh
 ps -c
 esxcli software vib list
 esxcli system version get
+exit
 ```
+
+Create the [debian-vagrant base box and example](https://github.com/rgl/debian-vagrant) within this esxi instance.
 
 # Notes
 
