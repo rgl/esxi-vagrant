@@ -1,6 +1,15 @@
 #!/bin/sh
 set -euxo pipefail
 
+# install the packer VIB (vSphere Installation Bundle) to automatically
+# configure the system to handle packer deployments with the
+# vmware-iso packer builder:
+#   * enable guest ARP inspection to get their IP addresses (aka the Guest IP Hack).
+#   * configure the firewall to allow vnc connections (5900-6000 ports).
+# see https://github.com/umich-vci/packer-vib
+esxcli software acceptance set --level=CommunitySupported
+esxcli software vib install -v https://github.com/umich-vci/packer-vib/releases/download/v1.0.0-1/packer.vib
+
 # create a temporary copy before directly change it.
 cp /etc/vmware/esx.conf /tmp/esx.conf.orig
 
