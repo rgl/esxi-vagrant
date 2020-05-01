@@ -2,6 +2,7 @@ packer_cache/
 output-*/
 tmp/
 .vagrant/
+shared/
 *.log
 *.iso
 *.box
