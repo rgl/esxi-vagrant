@@ -1,11 +1,12 @@
 Vagrant.configure(2) do |config|
-  config.vm.box = 'esxi-6.7-amd64'
+  config.vm.box = 'esxi-7.0-amd64'
   config.vm.define 'esxi'
   config.vm.hostname = 'esxi.test'
 
   config.vm.provider 'libvirt' do |lv, config|
-    lv.memory = 4096
+    lv.memory = 4*1024
     lv.cpus = 4
+    lv.storage :file, :bus => 'ide', :cache => 'unsafe', :size => '40G'
   end
 
   # create the management certificate that will be used to access the esxi
@@ -26,6 +27,9 @@ Vagrant.configure(2) do |config|
   # configure the management certificate.
   config.vm.provision :file, source: "shared/tls/example-esxi-ca/#{config.vm.hostname}", destination: '/tmp/tls'
   config.vm.provision :shell, privileged: false, path: 'provision-management-certificate.sh'
+
+  # create the datastore1 datastore in the second disk.
+  config.vm.provision :shell, privileged: false, path: 'provision-datastore.sh'
 
   # show the installation summary.
   config.vm.provision :shell, privileged: false, path: 'summary.sh'

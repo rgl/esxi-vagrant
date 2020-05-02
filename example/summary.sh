@@ -10,7 +10,7 @@ cat <<EOF
 
 To access this system add this host managament IP address to your hosts file:
 
-    echo '$management_ip_address $fqdn' | sudo tee --append /etc/hosts
+    sudo bash -c "hosts=\"\$(grep -vE '\\s+$fqdn' /etc/hosts)\"; (echo \"\\\$hosts\"; echo '$management_ip_address $fqdn') >/etc/hosts"
 
 Trust the example CA:
 

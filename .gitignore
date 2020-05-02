@@ -6,3 +6,4 @@ shared/
 *.log
 *.iso
 *.box
+*.qcow2
