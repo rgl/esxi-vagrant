@@ -14,6 +14,11 @@ can be later used as a vagrant base box.
 have to create one yourself in your vagrant environment (see the
 [vagrant example](example)).
 
+**NB** If you want to create a base box with a datastore, you have to edit
+the `esxi.json` file to add `autoPartitionOSDataSize=4096` to the
+`boot_command` array (after the `ks=` element) and increase `disk_size` to
+a size that is big enough to hold your datastore.
+
 **NB** This is needed until [packer#9160](https://github.com/hashicorp/packer/issues/9160) and [vagrant-libvirt#602](https://github.com/vagrant-libvirt/vagrant-libvirt/issues/602) are addressed.
 
 ## Usage
@@ -131,3 +136,4 @@ to enable nested virtualization on your host system, see:
 * [How to properly clone a Nested ESXi VM?](https://www.virtuallyghetto.com/2013/12/how-to-properly-clone-nested-esxi-vm.html).
 * [vmk0 management network MAC address is not updated when NIC card is replaced or vmkernel has duplicate MAC address (1031111)](https://kb.vmware.com/s/article/1031111).
 * [Applying vSphere host configuration changes after an unclean shutdown (2001780)](https://kb.vmware.com/s/article/2001780).
+* [Changing the default size of the ESX-OSData volume in ESXi 7.0](https://www.virtuallyghetto.com/2020/05/changing-the-default-size-of-the-esx-osdata-volume-in-esxi-7-0.html).
