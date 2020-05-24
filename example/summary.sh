@@ -24,4 +24,9 @@ Access the management web interface at:
 
     https://$fqdn
 
+And login with the following user name and password:
+
+    root
+    HeyH0Password
+
 EOF
