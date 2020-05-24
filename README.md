@@ -1,12 +1,5 @@
 # About
 
-**WARNING: THIS IS NOT YET WORKING.**
-
-For some reason vmxnet3 and the qemu user mode networking do not seem to
-work together. As such, packer is not able to connect to the SSH daemon
-and will not be able to complete the installation. Thou, this will work
-[when packer supports the qemu bridge mode](https://github.com/hashicorp/packer/issues/9156).
-
 This is a packer template for installing ESXi inside a VM in a way that
 can be later used as a vagrant base box.
 
@@ -25,6 +18,8 @@ a size that is big enough to hold your datastore.
 
 **NB** These instructions are for an Ubuntu 20.04 host.
 
+Install Packer 1.6.0+ ([because we need to use the qemu bridge mode](https://github.com/hashicorp/packer/issues/9156)).
+
 Download the [Free ESXi 7.0 (aka vSphere Hypervisor) iso file](https://www.vmware.com/go/get-free-esxi).
 
 ### qemu-kvm
@@ -35,6 +30,15 @@ Install qemu-kvm:
 apt-get install -y qemu-kvm
 apt-get install -y sysfsutils
 systool -m kvm_intel -v
+```
+
+Allow non-root users to add tap interfaces to a bridge:
+
+```bash
+# allow non-root users to add tap interfaces to virbr0.
+# NB a tap (L2) interface is created by qemu when we use a bridge netdev.
+sudo chmod u+s /usr/lib/qemu/qemu-bridge-helper
+sudo bash -c 'mkdir -p /etc/qemu && echo "allow virbr0" >>/etc/qemu/bridge.conf'
 ```
 
 Create the base box and follow the returned instructions:
