@@ -1,7 +1,7 @@
 {
   "variables": {
     "disk_size": "4G",
-    "version": "7.0.2.",
+    "version": "7.0.2",
     "iso_url": "VMware-VMvisor-Installer-7.0U2a-17867351.x86_64.iso",
     "iso_checksum": "sha256:35d80d52dfca79f52eadd1c641e2f990371e834e98b3ef95914b7f950b42f629"
   },

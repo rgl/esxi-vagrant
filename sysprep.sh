@@ -35,8 +35,8 @@ sed -i -E '/\/(mac|virtualMac) = /d' /etc/vmware/esx.conf
 # show our changes.
 diff -u /tmp/esx.conf.orig /etc/vmware/esx.conf || true
 
-# get rid of harcodet mac address settins
+# get rid of harcoded mac address settings.
 esxcli system settings advanced set -o /Net/FollowHardwareMac -i 1
 
-# make changes permanent
+# make changes permanent.
 /sbin/auto-backup.sh
