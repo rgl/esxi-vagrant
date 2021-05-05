@@ -20,7 +20,7 @@ a size that is big enough to hold your datastore.
 
 Install Packer 1.6.0+ ([because we need to use the qemu bridge mode](https://github.com/hashicorp/packer/issues/9156)).
 
-Download the [Free ESXi 7.0 (aka vSphere Hypervisor) iso file](https://www.vmware.com/go/get-free-esxi).
+Download the [Free ESXi 7.0U2a (aka vSphere Hypervisor) iso file](https://www.vmware.com/go/get-free-esxi).
 
 ### qemu-kvm
 
@@ -100,7 +100,7 @@ qemu-system-x86_64 \
   -netdev bridge,id=net0,br=virbr0 \
   -device vmxnet3,id=nic0,netdev=net0,mac=52:54:00:12:34:56 \
   -drive if=ide,media=disk,discard=unmap,format=qcow2,cache=unsafe,file=test.qcow2 \
-  -drive if=ide,media=cdrom,file=VMware-VMvisor-Installer-7.0.0-15843807.x86_64.iso
+  -drive if=ide,media=cdrom,file=VMware-VMvisor-Installer-7.0U2a-17867351.x86_64.iso
 
 # wait for the mac address to appear in the virbr0 interface, e.g. it
 # should output something alike:
