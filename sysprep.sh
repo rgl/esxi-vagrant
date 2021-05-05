@@ -17,21 +17,6 @@ cp /etc/vmware/esx.conf /tmp/esx.conf.orig
 # see https://www.virtuallyghetto.com/2013/12/how-to-properly-clone-nested-esxi-vm.html
 sed -i -E '/^\/system\/uuid = /d' /etc/vmware/esx.conf
 
-# delete the MAC addresses settings.
-#
-# at installation time ESXi remembers the MAC addresses and will always
-# use those even when we switch them at the qemu/VM level, so in order
-# to be able to launch this with vagrant, we need to reset them.
-#
-# the MAC addresses are stored inside /etc/vmware/esx.conf, e.g.:
-#
-#   /net/vmkernelnic/child[0000]/mac = "52:54:00:12:34:56"
-#   /net/pnic/child[0000]/mac = "52:54:00:12:34:56"
-#   /net/pnic/child[0000]/virtualMac = "00:50:56:5d:29:50"
-#
-# see https://github.com/vagrant-libvirt/vagrant-libvirt/issues/1099
-sed -i -E '/\/(mac|virtualMac) = /d' /etc/vmware/esx.conf
-
 # show our changes.
 diff -u /tmp/esx.conf.orig /etc/vmware/esx.conf || true
 
