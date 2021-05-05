@@ -18,7 +18,7 @@ Trust the example CA:
     sudo update-ca-certificates -v
     certutil -d sql:$HOME/.pki/nssdb -A -t 'C,,' -n 'Example ESXi CA' -i shared/tls/example-esxi-ca/example-esxi-ca-crt.pem
     certutil -d sql:$HOME/.pki/nssdb -L
-    #certutil -d sql:$HOME/.pki/nssdb -D -n example-ca # delete.
+    #certutil -d sql:$HOME/.pki/nssdb -D -n 'Example ESXi CA' # delete.
 
 Access the management web interface at:
 
