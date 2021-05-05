@@ -27,6 +27,6 @@ Access the management web interface at:
 And login with the following user name and password:
 
     root
-    HeyH0Password
+    HeyH0Password!
 
 EOF

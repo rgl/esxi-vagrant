@@ -1,10 +1,9 @@
 {
   "variables": {
     "disk_size": "4G",
-    "version": "7.0",
-    "iso_url": "VMware-VMvisor-Installer-7.0.0-15843807.x86_64.iso",
-    "iso_checksum": "cf3c8324ede983f4148df9ea161d9d6fccf40105aed204f5f59c1c5bd3377517",
-    "iso_checksum_type": "sha256"
+    "version": "7.0.2",
+    "iso_url": "VMware-VMvisor-Installer-7.0U2a-17867351.x86_64.iso",
+    "iso_checksum": "sha256:35d80d52dfca79f52eadd1c641e2f990371e834e98b3ef95914b7f950b42f629"
   },
   "builders": [
     {
@@ -26,9 +25,8 @@
       "net_device": "vmxnet3",
       "iso_url": "{{user `iso_url`}}",
       "iso_checksum": "{{user `iso_checksum`}}",
-      "iso_checksum_type": "{{user `iso_checksum_type`}}",
       "ssh_username": "root",
-      "ssh_password": "HeyH0Password",
+      "ssh_password": "HeyH0Password!",
       "ssh_timeout": "60m",
       "boot_wait": "3s",
       "boot_command": [
@@ -48,7 +46,7 @@
     {
       "type": "shell",
       "script": "info.sh",
-      "pause_before": "15s"
+      "pause_before": "30s"
     },
     {
       "type": "shell",
