@@ -40,6 +40,42 @@
         "<enter>"
       ],
       "shutdown_command": "poweroff; while true; do sleep 10; done;"
+    },
+    {
+      "name": "esxi-{{user `version`}}-uefi-amd64-libvirt",
+      "type": "qemu",
+      "accelerator": "kvm",
+      "cpus": 4,
+      "memory": 4096,
+      "qemuargs": [
+        ["-bios", "/usr/share/ovmf/OVMF.fd"],
+        ["-cpu", "host"]
+      ],
+      "headless": false,
+      "http_directory": ".",
+      "format": "qcow2",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_interface": "ide",
+      "disk_discard": "unmap",
+      "net_bridge": "virbr0",
+      "net_device": "vmxnet3",
+      "iso_url": "{{user `iso_url`}}",
+      "iso_checksum": "{{user `iso_checksum`}}",
+      "ssh_username": "root",
+      "ssh_password": "HeyH0Password!",
+      "ssh_timeout": "60m",
+      "boot_wait": "3s",
+      "boot_command": [
+        "<enter>",
+        "<wait>",
+        "<leftShiftOn>O<leftShiftOff>",
+        "<wait>",
+        " netdevice=vmnic0",
+        " bootproto=dhcp",
+        " ks=http://{{.HTTPIP}}:{{.HTTPPort}}/ks.cfg",
+        "<enter>"
+      ],
+      "shutdown_command": "poweroff; while true; do sleep 10; done;"
     }
   ],
   "provisioners": [
@@ -57,7 +93,18 @@
     {
       "type": "vagrant",
       "output": "{{.BuildName}}.box",
-      "vagrantfile_template": "Vagrantfile.template"
+      "vagrantfile_template": "Vagrantfile.template",
+      "only": [
+        "esxi-{{user `version`}}-amd64-libvirt"
+      ]
+    },
+    {
+      "type": "vagrant",
+      "output": "{{.BuildName}}.box",
+      "vagrantfile_template": "Vagrantfile-uefi.template",
+      "only": [
+        "esxi-{{user `version`}}-uefi-amd64-libvirt"
+      ]
     }
   ]
 }

@@ -1,5 +1,6 @@
 Vagrant.configure(2) do |config|
   config.vm.box = 'esxi-7.0.2-amd64'
+  #config.vm.box = 'esxi-7.0.2-uefi-amd64'
   config.vm.define 'esxi'
   config.vm.hostname = 'esxi.test'
 

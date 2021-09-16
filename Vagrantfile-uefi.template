@@ -1,0 +1,17 @@
+Vagrant.configure(2) do |config|
+  # see https://github.com/hashicorp/vagrant/tree/main/plugins/guests/esxi
+  config.vm.guest = :esxi
+  config.ssh.username = 'root'
+  config.ssh.password = 'HeyH0Password!'
+  config.ssh.shell = '/bin/sh'
+  config.vm.provider 'libvirt' do |lv, config|
+    lv.loader = '/usr/share/ovmf/OVMF.fd'
+    lv.cpu_mode = 'host-passthrough'
+    lv.nested = true
+    lv.keymap = 'pt'
+    lv.disk_bus = 'ide'
+    lv.nic_model_type = 'vmxnet3'
+    lv.video_type = 'vga'
+    config.vm.synced_folder '.', '/vagrant', disabled: true
+  end
+end

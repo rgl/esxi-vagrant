@@ -1,9 +1,10 @@
 VERSION=$(shell jq -r .variables.version esxi.json)
 
 help:
-	@echo type make build-libvirt
+	@echo type make build-libvirt or make build-uefi-libvirt
 
 build-libvirt: esxi-${VERSION}-amd64-libvirt.box
+build-uefi-libvirt: esxi-${VERSION}-uefi-amd64-libvirt.box
 
 esxi-${VERSION}-amd64-libvirt.box: ks.cfg sysprep.sh esxi.json Vagrantfile.template
 	rm -f $@
@@ -11,7 +12,15 @@ esxi-${VERSION}-amd64-libvirt.box: ks.cfg sysprep.sh esxi.json Vagrantfile.templ
 		packer build -only=esxi-${VERSION}-amd64-libvirt -on-error=abort -timestamp-ui esxi.json
 	@echo BOX successfully built!
 	@echo to add to local vagrant install do:
-	@echo vagrant box add -f esxi-${VERSION}-amd64 esxi-${VERSION}-amd64-libvirt.box
+	@echo vagrant box add -f esxi-${VERSION}-amd64 $@
+
+esxi-${VERSION}-uefi-amd64-libvirt.box: ks.cfg sysprep.sh esxi.json Vagrantfile-uefi.template
+	rm -f $@
+	PACKER_KEY_INTERVAL=10ms CHECKPOINT_DISABLE=1 PACKER_LOG=1 PACKER_LOG_PATH=$@.log \
+		packer build -only=esxi-${VERSION}-uefi-amd64-libvirt -on-error=abort -timestamp-ui esxi.json
+	@echo BOX successfully built!
+	@echo to add to local vagrant install do:
+	@echo vagrant box add -f esxi-${VERSION}-uefi-amd64 $@
 
 tmp/esxi-7.iso:
 	# see https://www.powershellgallery.com/packages/VMware.PowerCLI/12.0.0.15947286
