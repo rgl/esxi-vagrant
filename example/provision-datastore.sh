@@ -2,7 +2,9 @@
 set -euxo pipefail
 
 datastore_name='datastore1'
-disk_device='/vmfs/devices/disks/t10.ATA_____QEMU_HARDDISK___________________________QM00002_____________'
+disk_device="/vmfs/devices/disks/$(
+    esxcli --formatter=csv --format-param=fields=TargetIdentifier,Device storage core path list \
+        | awk -F, '/^pscsi.0:1,/{print $2}')"
 
 # initialize the disk with a GPT partition/label.
 partedUtil mklabel $disk_device gpt

@@ -1,10 +1,11 @@
 VERSION=$(shell jq -r .variables.version esxi.json)
 
 help:
-	@echo type make build-libvirt or make build-uefi-libvirt
+	@echo type make build-libvirt, make build-uefi-libvirt, or make build-vsphere
 
 build-libvirt: esxi-${VERSION}-amd64-libvirt.box
 build-uefi-libvirt: esxi-${VERSION}-uefi-amd64-libvirt.box
+build-vsphere: esxi-${VERSION}-amd64-vsphere.box
 
 esxi-${VERSION}-amd64-libvirt.box: ks.cfg sysprep.sh esxi.json Vagrantfile.template
 	rm -f $@
@@ -21,6 +22,22 @@ esxi-${VERSION}-uefi-amd64-libvirt.box: ks.cfg sysprep.sh esxi.json Vagrantfile-
 	@echo BOX successfully built!
 	@echo to add to local vagrant install do:
 	@echo vagrant box add -f esxi-${VERSION}-uefi-amd64 $@
+
+esxi-${VERSION}-amd64-vsphere.box: ks.cfg sysprep.sh esxi-vsphere.json Vagrantfile.template
+	rm -f $@
+	CHECKPOINT_DISABLE=1 PACKER_LOG=1 PACKER_LOG_PATH=$@.log \
+		packer build -only=esxi-${VERSION}-amd64-vsphere -timestamp-ui esxi-vsphere.json
+	# create a vagrant box.
+	rm -rf tmp/vsphere-box && \
+		mkdir -p tmp/vsphere-box && \
+		cd tmp/vsphere-box && \
+		echo '{"provider":"vsphere"}' >metadata.json && \
+		cp ../../Vagrantfile.template Vagrantfile && \
+		tar cf ../../$@ .
+	rm -rf tmp/vsphere-box
+	@echo BOX successfully built!
+	@echo to add to local vagrant install do:
+	@echo vagrant box add -f esxi-${VERSION}-amd64 $@
 
 tmp/esxi-7.iso:
 	# see https://www.powershellgallery.com/packages/VMware.PowerCLI/12.0.0.15947286

@@ -7,3 +7,4 @@ shared/
 *.iso
 *.box
 *.qcow2
+secrets*

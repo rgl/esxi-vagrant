@@ -22,7 +22,7 @@ Install Packer 1.6.0+ ([because we need to use the qemu bridge mode](https://git
 
 Download the [Free ESXi 7.0U2a (aka vSphere Hypervisor) iso file](https://www.vmware.com/go/get-free-esxi).
 
-### qemu-kvm
+### qemu-kvm usage
 
 Install qemu-kvm:
 
@@ -68,7 +68,7 @@ exit
 
 Create the [debian-vagrant base box and example](https://github.com/rgl/debian-vagrant) within this esxi instance.
 
-#### raw qemu-kvm
+#### raw qemu-kvm usage
 
 To fiddle with ESXi it can be more straightforward to directly use qemu, e.g.:
 
@@ -118,6 +118,62 @@ ssh -v root@192.168.121.111
 
 # open a browser session.
 xdg-open https://192.168.121.111
+```
+
+### VMware vSphere usage
+
+Download [govc](https://github.com/vmware/govmomi/releases/latest) and place it inside your `/usr/local/bin` directory.
+
+Set your vSphere details, and test the connection to vSphere:
+
+```bash
+sudo apt-get install build-essential patch ruby-dev zlib1g-dev liblzma-dev
+vagrant plugin install vagrant-vsphere
+cat >secrets.sh <<EOF
+export GOVC_INSECURE='1'
+export GOVC_HOST='vsphere.local'
+export GOVC_URL="https://$GOVC_HOST/sdk"
+export GOVC_USERNAME='administrator@vsphere.local'
+export GOVC_PASSWORD='password'
+export GOVC_DATACENTER='Datacenter'
+export GOVC_CLUSTER='Cluster'
+export GOVC_DATASTORE='Datastore'
+export VSPHERE_OS_ISO="[$GOVC_DATASTORE] iso/VMware-VMvisor-Installer-7.0U2a-17867351.x86_64.iso"
+export VSPHERE_ESXI_HOST='esxi.local'
+export VSPHERE_TEMPLATE_FOLDER='test/templates'
+export VSPHERE_TEMPLATE_NAME="$VSPHERE_TEMPLATE_FOLDER/esxi-7.0.2-amd64-vsphere"
+export VSPHERE_VM_FOLDER='test'
+export VSPHERE_VM_NAME='esxi-vagrant-example'
+# NB for the nested VMs to access the network, this VLAN port group security
+#    policy MUST be configured to Accept:
+#      Promiscuous mode
+#      Forged transmits
+export VSPHERE_VLAN='packer'
+EOF
+source secrets.sh
+# see https://github.com/vmware/govmomi/blob/master/govc/USAGE.md
+govc version
+govc about
+govc datacenter.info # list datacenters
+govc find # find all managed objects
+```
+
+Upload the ESXi ISO to the datastore.
+
+Type `make build-vsphere` and follow the instructions.
+
+Try the example vagrant example:
+
+```bash
+cd example
+source ../secrets.sh
+vagrant up --provider=vsphere --no-destroy-on-error
+vagrant ssh
+ps -c
+esxcli software vib list
+esxcli system version get
+exit
+vagrant destroy -f
 ```
 
 ## Notes

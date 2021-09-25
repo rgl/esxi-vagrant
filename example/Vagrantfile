@@ -1,21 +1,61 @@
+ESXI_DOMAIN = 'esxi.test'
+MANAGEMENT_CERTIFICATE_PATH = "shared/tls/example-esxi-ca/#{ESXI_DOMAIN}"
+DATASTORE_DISK_SIZE_GB = 40
+
+# enable typed triggers.
+# NB this is needed to modify the libvirt domain scsi controller model to virtio-scsi.
+ENV['VAGRANT_EXPERIMENTAL'] = 'typed_triggers'
+
+require 'open3'
+
+# create the management certificate that will be used to access the esxi
+# management web interface (hostd).
+def ensure_management_certificate
+  return if File.exists? MANAGEMENT_CERTIFICATE_PATH
+  system("bash provision-certificate.sh #{ESXI_DOMAIN}")
+end
+
+ensure_management_certificate
+
 Vagrant.configure(2) do |config|
   config.vm.box = 'esxi-7.0.2-amd64'
   #config.vm.box = 'esxi-7.0.2-uefi-amd64'
   config.vm.define 'esxi'
-  config.vm.hostname = 'esxi.test'
+  config.vm.hostname = ESXI_DOMAIN
 
   config.vm.provider 'libvirt' do |lv, config|
     lv.memory = 4*1024
     lv.cpus = 4
-    lv.storage :file, :bus => 'ide', :cache => 'unsafe', :size => '40G'
+    lv.storage :file, :bus => 'ide', :cache => 'unsafe', :size => "#{DATASTORE_DISK_SIZE_GB}G"
   end
 
-  # create the management certificate that will be used to access the esxi
-  # management web interface (hostd).
-  config.trigger.before :up do |trigger|
-    trigger.run = {
-      inline: "bash provision-certificate.sh #{config.vm.hostname}"
-    }
+  config.vm.provider 'vsphere' do |vsphere, config|
+    vsphere.name = ENV['VSPHERE_VM_NAME']
+    vsphere.notes = "Created from #{__FILE__}"
+    vsphere.cpu_count = 4
+    vsphere.memory_mb = 4*1024
+    vsphere.user = ENV['GOVC_USERNAME']
+    vsphere.password = ENV['GOVC_PASSWORD']
+    vsphere.insecure = ENV['GOVC_INSECURE'] == '1'
+    vsphere.host = ENV['GOVC_HOST']
+    vsphere.data_center_name = ENV['GOVC_DATACENTER']
+    vsphere.compute_resource_name = ENV['GOVC_CLUSTER']
+    vsphere.data_store_name = ENV['GOVC_DATASTORE']
+    vsphere.template_name = ENV['VSPHERE_TEMPLATE_NAME']
+    vsphere.vm_base_path = ENV['VSPHERE_VM_FOLDER']
+    vsphere.vlan = ENV['VSPHERE_VLAN']
+    config.trigger.after :'VagrantPlugins::VSphere::Action::Clone', type: :action do |trigger|
+      trigger.ruby do |env, machine|
+        stdout, stderr, status = Open3.capture3(
+          'bash',
+          'provision-datastore-disk-vsphere.sh',
+          machine.id,
+          "#{DATASTORE_DISK_SIZE_GB}")
+        if status.exitstatus != 0
+          raise "failed to add the datastore disk. status=#{status.exitstatus} stdout=#{stdout} stderr=#{stderr}"
+        end
+      end
+    end
   end
 
   # NB you must use `privileged: false` in the provisioning steps because esxi
@@ -26,7 +66,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, privileged: false, inline: 'esxcli system settings advanced set -o /UserVars/HostClientCEIPOptIn -i 2'
 
   # configure the management certificate.
-  config.vm.provision :file, source: "shared/tls/example-esxi-ca/#{config.vm.hostname}", destination: '/tmp/tls'
+  config.vm.provision :file, source: MANAGEMENT_CERTIFICATE_PATH, destination: '/tmp/tls'
   config.vm.provision :shell, privileged: false, path: 'provision-management-certificate.sh'
 
   # create the datastore1 datastore in the second disk.
