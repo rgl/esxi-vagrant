@@ -120,6 +120,45 @@ ssh -v root@192.168.121.111
 xdg-open https://192.168.121.111
 ```
 
+### VMware ESXi usage
+
+Set your ESXi details, and test the connection to vSphere:
+
+```bash
+vagrant plugin install vagrant-vmware-esxi
+cat >secrets.sh <<EOF
+export ESXI_HOSTNAME='esxi.test'
+export ESXI_USERNAME='root'
+export ESXI_PASSWORD='HeyH0Password!'
+export ESXI_DATASTORE='datastore1'
+# NB for the nested VMs to access the network, this VLAN port group security
+#    policy MUST be configured to Accept:
+#      Promiscuous mode
+#      Forged transmits
+export ESXI_NETWORK='esxi'
+export ESXI_TEMPLATE='template-esxi-7.0.2-amd64-esxi'
+EOF
+source secrets.sh
+```
+
+Upload the ESXi ISO to the datastore.
+
+Type `make build-esxi` and follow the instructions.
+
+Try the example vagrant example:
+
+```bash
+cd example
+source ../secrets.sh
+vagrant up --provider=vmware_esxi --no-destroy-on-error
+vagrant ssh
+ps -c
+esxcli software vib list
+esxcli system version get
+exit
+vagrant destroy -f
+```
+
 ### VMware vSphere usage
 
 Download [govc](https://github.com/vmware/govmomi/releases/latest) and place it inside your `/usr/local/bin` directory.

@@ -29,6 +29,19 @@ Vagrant.configure(2) do |config|
     lv.storage :file, :bus => 'ide', :cache => 'unsafe', :size => "#{DATASTORE_DISK_SIZE_GB}G"
   end
 
+  config.vm.provider :vmware_esxi do |esxi|
+    esxi.esxi_hostname = ENV['ESXI_HOSTNAME']
+    esxi.esxi_username = ENV['ESXI_USERNAME']
+    esxi.esxi_password = ENV['ESXI_PASSWORD']
+    esxi.esxi_virtual_network = [ENV['ESXI_NETWORK']]
+    esxi.clone_from_vm = ENV['ESXI_TEMPLATE']
+    esxi.guest_storage = [{size: DATASTORE_DISK_SIZE_GB, datastore: ENV['ESXI_DATASTORE']}]
+    esxi.guest_numvcpus = 4
+    esxi.guest_memsize = 4*1024
+    esxi.guest_guestos = 'vmkernel65' # TODO use vmkernel7 when https://github.com/josenk/vagrant-vmware-esxi/issues/121#issuecomment-928704371 is addressed.
+    #esxi.debug = 'true'
+  end
+
   config.vm.provider 'vsphere' do |vsphere, config|
     vsphere.name = ENV['VSPHERE_VM_NAME']
     vsphere.notes = "Created from #{__FILE__}"
