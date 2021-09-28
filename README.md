@@ -122,7 +122,7 @@ xdg-open https://192.168.121.111
 
 ### VMware ESXi usage
 
-Set your ESXi details, and test the connection to vSphere:
+Set your ESXi details, and test the connection to ESXi:
 
 ```bash
 vagrant plugin install vagrant-vmware-esxi
