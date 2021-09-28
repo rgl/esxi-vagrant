@@ -43,7 +43,7 @@ esxi-${VERSION}-amd64-esxi.box: ks.cfg sysprep.sh esxi-esxi.json
 esxi-${VERSION}-amd64-vsphere.box: ks.cfg sysprep.sh esxi-vsphere.json Vagrantfile.template
 	rm -f $@
 	CHECKPOINT_DISABLE=1 PACKER_LOG=1 PACKER_LOG_PATH=$@.log \
-		packer build -only=esxi-${VERSION}-amd64-vsphere -timestamp-ui esxi-vsphere.json
+		packer build -only=esxi-${VERSION}-amd64-vsphere -on-error=abort -timestamp-ui esxi-vsphere.json
 	# create a vagrant box.
 	rm -rf tmp/vsphere-box && \
 		mkdir -p tmp/vsphere-box && \
