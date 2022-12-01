@@ -12,6 +12,7 @@ Vagrant.configure(2) do |config|
     lv.disk_bus = 'ide'
     lv.nic_model_type = 'vmxnet3'
     lv.video_type = 'vga'
+    lv.memory = 4000
     config.vm.synced_folder '.', '/vagrant', disabled: true
   end
 end
