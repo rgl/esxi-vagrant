@@ -5,6 +5,10 @@ domain=$1
 ca_file_name='example-esxi-ca'
 ca_common_name='Example ESXi CA'
 
+# restore the vagrant modified environment variables.
+# NB this is required for running openssl.
+export PATH="$VAGRANT_OLD_ENV_PATH"
+
 mkdir -p shared/tls/$ca_file_name
 cd shared/tls/$ca_file_name
 
