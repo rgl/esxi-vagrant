@@ -20,7 +20,7 @@ a size that is big enough to hold your datastore.
 
 Install Packer 1.6.0+ ([because we need to use the qemu bridge mode](https://github.com/hashicorp/packer/issues/9156)).
 
-Download the [Free ESXi 7.0U3c (aka vSphere Hypervisor) iso file](https://www.vmware.com/go/get-free-esxi).
+Download the [Free ESXi 7.0U3g (aka vSphere Hypervisor) iso file](https://www.vmware.com/go/get-free-esxi).
 
 ### qemu-kvm usage
 
@@ -100,7 +100,7 @@ qemu-system-x86_64 \
   -netdev bridge,id=net0,br=virbr0 \
   -device vmxnet3,id=nic0,netdev=net0,mac=52:54:00:12:34:56 \
   -drive if=ide,media=disk,discard=unmap,format=qcow2,cache=unsafe,file=test.qcow2 \
-  -drive if=ide,media=cdrom,file=VMware-VMvisor-Installer-7.0U3c-19193900.x86_64.iso
+  -drive if=ide,media=cdrom,file=VMware-VMvisor-Installer-7.0U3g-20328353.x86_64.iso
 
 # wait for the mac address to appear in the virbr0 interface, e.g. it
 # should output something alike:
@@ -177,7 +177,7 @@ export GOVC_PASSWORD='password'
 export GOVC_DATACENTER='Datacenter'
 export GOVC_CLUSTER='Cluster'
 export GOVC_DATASTORE='Datastore'
-export VSPHERE_OS_ISO="[$GOVC_DATASTORE] iso/VMware-VMvisor-Installer-7.0U3c-19193900.x86_64.iso"
+export VSPHERE_OS_ISO="[$GOVC_DATASTORE] iso/VMware-VMvisor-Installer-7.0U3g-20328353.x86_64.iso"
 export VSPHERE_ESXI_HOST='esxi.local'
 export VSPHERE_TEMPLATE_FOLDER='test/templates'
 export VSPHERE_TEMPLATE_NAME="$VSPHERE_TEMPLATE_FOLDER/esxi-7.0.3-amd64-vsphere"

@@ -2,8 +2,8 @@
   "variables": {
     "disk_size": "4096",
     "version": "7.0.3",
-    "iso_url": "VMware-VMvisor-Installer-7.0U3c-19193900.x86_64.iso",
-    "iso_checksum": "sha256:3a7f8f9ec46c9f3cb3057553b64fbd74251485bf59cc4606b1f5b9450c33ec55",
+    "iso_url": "VMware-VMvisor-Installer-7.0U3g-20328353.x86_64.iso",
+    "iso_checksum": "sha256:2900301711b1199643cf3b602706c3ece4ca03286972c07ed9d7d4a45164a433",
     "esxi_hostname": "{{env `ESXI_HOSTNAME`}}",
     "esxi_username": "{{env `ESXI_USERNAME`}}",
     "esxi_password": "{{env `ESXI_PASSWORD`}}",
