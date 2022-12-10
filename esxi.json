@@ -1,9 +1,9 @@
 {
   "variables": {
-    "disk_size": "4G",
-    "version": "7.0.3",
-    "iso_url": "VMware-VMvisor-Installer-7.0U3g-20328353.x86_64.iso",
-    "iso_checksum": "sha256:2900301711b1199643cf3b602706c3ece4ca03286972c07ed9d7d4a45164a433"
+    "disk_size": "32G",
+    "version": "8.0.0",
+    "iso_url": "VMware-VMvisor-Installer-8.0-20513097.x86_64.iso",
+    "iso_checksum": "sha256:78b8ee5613019f8d92da2b74fae674707679379803cb7b01b526747a849138c1"
   },
   "builders": [
     {

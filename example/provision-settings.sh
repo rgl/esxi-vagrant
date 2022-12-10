@@ -6,3 +6,6 @@ $SHELL -c 'while ! esxcli system settings advanced list -o /UserVars/HostClientC
 
 # do not Join the VMware Customer Experience Improvement Program.
 esxcli system settings advanced set -o /UserVars/HostClientCEIPOptIn -i 2
+
+# enable guest ARP inspection to get their IP addresses (aka the Guest IP Hack).
+esxcli system settings advanced set -o /Net/GuestIPHack -i 1
